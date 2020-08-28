@@ -73,6 +73,9 @@ public class FloorEditor : Singleton<FloorEditor>
 
 	void ReleaseOnDeleteButton()
 	{
+		if (Input.GetMouseButton(0)) // cursor left the button, wasn't released on it
+			return;
+
 		if (state == FloorEditorState.EditEntityPosition &&
 			selectedEntity)
 		{
