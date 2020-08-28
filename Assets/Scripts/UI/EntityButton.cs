@@ -26,7 +26,6 @@ public class EntityButton : MonoBehaviour
 
 		if (_action != null)
 		{
-			//GetComponentInChildren<Button>().onClick.AddListener(() => _action(entity));
 			EventTrigger.Entry entry = new EventTrigger.Entry();
 			entry.callback.AddListener((data) => _action(entity));
 			entry.eventID = EventTriggerType.BeginDrag;
