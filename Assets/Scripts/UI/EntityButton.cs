@@ -15,7 +15,7 @@ public class EntityButton : MonoBehaviour
 
 	public GameObject customTag;
 
-	public void Init(EntityTemplate _entity, UnityAction<EntityTemplate> _action = null)
+	public void Init(EntityTemplate _entity, UnityAction<EntityTemplate> _action, bool isDragAction)
 	{
 		entity = _entity;
 
@@ -28,7 +28,7 @@ public class EntityButton : MonoBehaviour
 		{
 			EventTrigger.Entry entry = new EventTrigger.Entry();
 			entry.callback.AddListener((data) => _action(entity));
-			entry.eventID = EventTriggerType.BeginDrag;
+			entry.eventID = isDragAction ? EventTriggerType.BeginDrag : EventTriggerType.PointerClick;
 			GetComponentInChildren<EventTrigger>().triggers.Add(entry);
 		}
 	}

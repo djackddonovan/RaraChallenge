@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class EntityList : MonoBehaviour
 {
-
-	public EntityTemplate[] defaultEntities;
 
 	public EntityButton buttonPrefab;
 	public Button newEntityButtonPrefab;
@@ -15,50 +14,42 @@ public class EntityList : MonoBehaviour
 
 	public Transform listObject;
 
-	private void OnEnable()
-	{
-		Rebuild();
-	}
+	public bool buttonAreDragAndDrop = false;
 
-	public void Rebuild()
+	public void Build(UnityAction<EntityTemplate> _entityButtonAction, bool _showCustomEntities, UnityAction _newEntityButtonAction)
 	{
 		foreach (Transform go in listObject)
 			Destroy(go.gameObject);
 
-		foreach (var entity in defaultEntities)
+		foreach (var entity in EditorGlobals.Instance.defaultEntities)
 		{
 			var button = Instantiate(buttonPrefab);
-			button.Init(entity, SpawnEntity);
+			button.Init(entity, _entityButtonAction, buttonAreDragAndDrop);
 			button.transform.SetParent(listObject);
 		}
 
-		var separator = Instantiate(separatorPrefab);
-		separator.transform.SetParent(listObject);
-
-		foreach (var entity in GameData.gameEntities)
+		if (_showCustomEntities)
 		{
-			var button = Instantiate(buttonPrefab);
-			button.Init(entity, SpawnEntity);
-			button.transform.SetParent(listObject);
+			var separator = Instantiate(separatorPrefab);
+			separator.transform.SetParent(listObject);
+
+			foreach (var entity in GameData.gameEntities)
+			{
+				var button = Instantiate(buttonPrefab);
+				button.Init(entity, _entityButtonAction, buttonAreDragAndDrop);
+				button.transform.SetParent(listObject);
+			}
 		}
 
-		separator = Instantiate(separatorPrefab);
-		separator.transform.SetParent(listObject);
+		if (_newEntityButtonAction != null)
+		{
+			var separator = Instantiate(separatorPrefab);
+			separator.transform.SetParent(listObject);
 
-		var newEntityButton = Instantiate(newEntityButtonPrefab);
-		newEntityButton.transform.SetParent(listObject);
-		newEntityButton.onClick.AddListener(CreateNewEntity);
-	}
-
-	void SpawnEntity(EntityTemplate _entity)
-	{
-		Entity newEntity = _entity.Spawn();
-		FloorEditor.EditEntityPosition(newEntity);
-	}
-
-	void CreateNewEntity()
-	{
-
+			var newEntityButton = Instantiate(newEntityButtonPrefab);
+			newEntityButton.transform.SetParent(listObject);
+			newEntityButton.onClick.AddListener(_newEntityButtonAction);
+		}
 	}
 
 }

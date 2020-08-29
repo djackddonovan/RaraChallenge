@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainEditMenu : MonoBehaviour
+public class FloorEditMenu : MonoBehaviour
 {
 	[Header("Main")]
 	public GameObject content;
@@ -24,10 +24,13 @@ public class MainEditMenu : MonoBehaviour
 		minimizeButton.onClick.AddListener(Minimize);
 	}
 
-	private void OnEnable()
+	void OnEnable()
 	{
 		menuDropdown.SetValueWithoutNotify(0);
 		SetCurrentMenu(0);
+
+		// add any created entity to the list
+		RebuildEntityList();
 	}
 
 	void SetCurrentMenu(int idx)
@@ -47,6 +50,27 @@ public class MainEditMenu : MonoBehaviour
 	{
 		content.SetActive(false);
 		maximizeButton.gameObject.SetActive(true);
+	}
+
+	void RebuildEntityList()
+	{
+		EntityList entityList = GetComponentInChildren<EntityList>();
+		entityList.Build(SpawnEntity, true, CreateNewEntity);
+	}
+
+	void SpawnEntity(EntityTemplate _entity)
+	{
+		Entity newEntity = _entity.Spawn();
+		FloorEditor.Instance.EditEntityPosition(newEntity);
+	}
+
+	void CreateNewEntity()
+	{
+		FloorEditor.Instance.Deselect();
+
+		EntityTemplate newEntity = ScriptableObject.CreateInstance<EntityTemplate>();
+		GameData.gameEntities.Add(newEntity);
+		MenuManager.OpenEntityEditMenu(newEntity);
 	}
 
 }

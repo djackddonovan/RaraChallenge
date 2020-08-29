@@ -384,7 +384,7 @@ GameObject:
   - component: {fileID: 2371625321466527279}
   - component: {fileID: 549506610054319115}
   m_Layer: 5
-  m_Name: Main Edit Menu
+  m_Name: Floor Edit Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -423,10 +423,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be705b9b6c9b8e04a9e03032f88b0eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuDropdown: {fileID: 2371625321658656158}
+  content: {fileID: 5826290221635160813}
   maximizeButton: {fileID: 5312628040285170086}
   minimizeButton: {fileID: 3604901027733718142}
-  content: {fileID: 5826290221635160813}
+  menuDropdown: {fileID: 2371625321658656158}
   addEntitiesMenu: {fileID: 2371625322770355821}
   floorEntitiesMenu: {fileID: 2371625323118066941}
   gameMenu: {fileID: 2371625322037182596}
@@ -2053,6 +2053,10 @@ PrefabInstance:
     - target: {fileID: 2154881539891183310, guid: 3a6b492890f97f54d8f8e92f59afc174, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371625322770355823, guid: 3a6b492890f97f54d8f8e92f59afc174, type: 3}
+      propertyPath: buttonAreDragAndDrop
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2521447678908329316, guid: 3a6b492890f97f54d8f8e92f59afc174, type: 3}
       propertyPath: m_AnchorMin.y

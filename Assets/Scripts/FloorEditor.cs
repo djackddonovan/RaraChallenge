@@ -12,15 +12,34 @@ enum FloorEditorState
 public class FloorEditor : Singleton<FloorEditor>
 {
 
+	public GameObject selectionIndicator;
+
 	public EventTrigger deleteEntityButton;
 
 	FloorEditorState state = FloorEditorState.Default;
 
 	Entity selectedEntity;
 
-	public static void EditEntityPosition(Entity _entity)
+	public void EditEntityPosition(Entity _entity)
 	{
 		Instance.EditEntityPositionInternal(_entity);
+	}
+
+	public void Select(Entity _entity)
+	{
+		if (!_entity)
+			Deselect();
+		else
+		{
+			selectedEntity = _entity;
+			selectionIndicator.gameObject.SetActive(true);
+		}
+	}
+
+	public void Deselect()
+	{
+		selectedEntity = null;
+		selectionIndicator.gameObject.SetActive(false);
 	}
 
 	private void Awake()
@@ -34,7 +53,7 @@ public class FloorEditor : Singleton<FloorEditor>
 	void EditEntityPositionInternal(Entity _entity)
 	{
 		MenuManager.Hide();
-		selectedEntity = _entity;
+		Select(_entity);
 		state = FloorEditorState.EditEntityPosition;
 		// snap the entity directly to the pointer
 		UpdateEditEntityPosition();
@@ -53,19 +72,28 @@ public class FloorEditor : Singleton<FloorEditor>
 		}
 	}
 
+	void LateUpdate()
+	{
+		if (selectedEntity != null)
+		{
+			selectionIndicator.transform.position = selectedEntity.transform.position;
+		}
+	}
+
 	void UpdateEditEntityPosition()
 	{
-		Ray cursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if (selectedEntity)
+		{
+			Ray cursorRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+			Vector3 floorPoint = cursorRay.origin - (cursorRay.origin.y / cursorRay.direction.y) * cursorRay.direction;
+			selectedEntity.transform.position = floorPoint;
+		}
 
-		Vector3 floorPoint = cursorRay.origin - (cursorRay.origin.y / cursorRay.direction.y) * cursorRay.direction;
-
-		selectedEntity.transform.position = floorPoint;
-
-		if (Input.GetMouseButtonUp(0))
+		if (!selectedEntity ||
+			Input.GetMouseButtonUp(0))
 		{
 			// Drop and stop moving the entity
 			state = FloorEditorState.Default;
-			selectedEntity = null;
 			MenuManager.Show();
 			deleteEntityButton.gameObject.SetActive(false);
 		}
@@ -80,6 +108,7 @@ public class FloorEditor : Singleton<FloorEditor>
 			selectedEntity)
 		{
 			Destroy(selectedEntity.gameObject);
+			Deselect();
 		}
 	}
 

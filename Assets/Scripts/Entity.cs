@@ -11,10 +11,10 @@ public class Entity : MonoBehaviour
 		if (EventSystem.current.IsPointerOverGameObject())
 			return;
 
-		// if (game running)
-		//	TriggetBehaviourClicks()
-		// else
-			FloorEditor.EditEntityPosition(this);
+		if (false /*game running*/)
+			TriggetBehaviourClicks();
+		else
+			FloorEditor.Instance.EditEntityPosition(this);
 	}
 
 	void TriggetBehaviourClicks()
