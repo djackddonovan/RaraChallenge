@@ -58,6 +58,7 @@ public class FloorEditMenu : MonoBehaviour
 		buildParams.entityButtonAction = SpawnEntity;
 		buildParams.showCustomEntities = true;
 		buildParams.newEntityButtonAction = CreateNewEntity;
+		buildParams.editAction = EditEntity;
 		buildParams.deleteAction = DeleteEntityTemplate;
 
 		EntityList entityList = GetComponentInChildren<EntityList>();
@@ -77,6 +78,11 @@ public class FloorEditMenu : MonoBehaviour
 		EntityTemplate newEntity = ScriptableObject.CreateInstance<EntityTemplate>();
 		GameData.gameEntities.Add(newEntity);
 		MenuManager.OpenEntityEditMenu(newEntity);
+	}
+
+	void EditEntity(EntityTemplate _entity)
+	{
+		MenuManager.OpenEntityEditMenu(_entity);
 	}
 
 	void DeleteEntityTemplate(EntityTemplate _entity)

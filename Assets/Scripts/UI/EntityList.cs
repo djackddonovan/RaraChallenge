@@ -13,8 +13,9 @@ public class EntityList : MonoBehaviour
 		public UnityAction<EntityTemplate> entityButtonAction = null;
 		public bool showCustomEntities = false;
 		public UnityAction newEntityButtonAction = null;
+		public UnityAction<EntityTemplate> editAction = null;
 		public UnityAction<EntityTemplate> deleteAction = null;
-		public bool showDeleteButtonOnDefaultEntities = false;
+		public bool showExtraButtonsOnDefaultEntities = false;
 	}
 
 	public EntityButton buttonPrefab;
@@ -33,7 +34,10 @@ public class EntityList : MonoBehaviour
 		foreach (var entity in EditorGlobals.Instance.defaultEntities)
 		{
 			var button = Instantiate(buttonPrefab);
-			button.Init(entity, _params.entityButtonAction, buttonAreDragAndDrop, _params.showDeleteButtonOnDefaultEntities ? _params.deleteAction : null);
+			if (_params.showExtraButtonsOnDefaultEntities)
+				button.Init(entity, _params.entityButtonAction, buttonAreDragAndDrop, _params.editAction, _params.deleteAction);
+			else
+				button.Init(entity, _params.entityButtonAction, buttonAreDragAndDrop, null, null);
 			button.transform.SetParent(listObject);
 		}
 
@@ -45,7 +49,7 @@ public class EntityList : MonoBehaviour
 			foreach (var entity in GameData.gameEntities)
 			{
 				var button = Instantiate(buttonPrefab);
-				button.Init(entity, _params.entityButtonAction, buttonAreDragAndDrop, _params.deleteAction);
+				button.Init(entity, _params.entityButtonAction, buttonAreDragAndDrop, _params.editAction, _params.deleteAction);
 				button.transform.SetParent(listObject);
 			}
 		}

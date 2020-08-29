@@ -13,17 +13,18 @@ public class EntityButton : MonoBehaviour
 	public EventTrigger mainButton;
 
 	public Text nameLabel;
-	public RawImage previewImage;
+	public Image previewImage;
 
 	public GameObject customTag;
 
+	public Button editButton;
 	public Button deleteButton;
 
-	public void Init(EntityTemplate _entity, UnityAction<EntityTemplate> _action, bool isDragAction, UnityAction<EntityTemplate> _deleteAction = null)
+	public void Init(EntityTemplate _entity, UnityAction<EntityTemplate> _action, bool isDragAction, UnityAction<EntityTemplate> _editAction, UnityAction<EntityTemplate> _deleteAction)
 	{
 		entity = _entity;
 
-		previewImage.texture = _entity.preview;
+		previewImage.sprite = _entity.preview;
 		nameLabel.text = _entity.entityName;
 
 		customTag.SetActive(!entity.isDefaultResource);
@@ -34,6 +35,16 @@ public class EntityButton : MonoBehaviour
 			entry.callback.AddListener((data) => _action(entity));
 			entry.eventID = isDragAction ? EventTriggerType.BeginDrag : EventTriggerType.PointerClick;
 			mainButton.triggers.Add(entry);
+		}
+
+		if (_editAction == null)
+		{
+			editButton.gameObject.SetActive(false);
+		}
+		else
+		{
+			editButton.gameObject.SetActive(true);
+			editButton.onClick.AddListener(() => _editAction(entity));
 		}
 
 		if (_deleteAction == null)

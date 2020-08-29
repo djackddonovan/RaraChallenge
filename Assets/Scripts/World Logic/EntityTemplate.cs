@@ -11,11 +11,11 @@ public class EntityTemplate : ScriptableObject
 
 	public bool isDefaultResource;
 
-	public Texture2D preview;
+	public Sprite preview;
 	public string entityName;
 	public Entity prefab;
 
-	//public EntityBehaviour[] behaviours;
+	public List<EntityBehaviourDefinition> behaviours = new List<EntityBehaviourDefinition>();
 
 #if UNITY_EDITOR
 	[MenuItem("Assets/Create/Entity Template")]
