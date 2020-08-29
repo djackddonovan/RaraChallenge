@@ -1572,6 +1572,14 @@ PrefabInstance:
       propertyPath: deploymentCurve.m_Curve.Array.data[3].time
       value: 5.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3956264828282601603, guid: d7a86775a2d3342429da163854010d35, type: 3}
+      propertyPath: deploymentCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3956264828282601603, guid: d7a86775a2d3342429da163854010d35, type: 3}
+      propertyPath: deploymentCurve.m_Curve.Array.data[1].time
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3956264828282601612, guid: d7a86775a2d3342429da163854010d35, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

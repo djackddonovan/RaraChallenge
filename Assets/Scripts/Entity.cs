@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 public class Entity : MonoBehaviour
 {
 
+	public EntityTemplate template;
+
 	void OnMouseDown()
 	{
 		if (EventSystem.current.IsPointerOverGameObject())

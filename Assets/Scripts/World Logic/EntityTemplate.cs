@@ -15,6 +15,8 @@ public class EntityTemplate : ScriptableObject
 	public string entityName;
 	public Entity prefab;
 
+	//public EntityBehaviour[] behaviours;
+
 #if UNITY_EDITOR
 	[MenuItem("Assets/Create/Entity Template")]
 	public static void CreateMyAsset()
@@ -32,9 +34,10 @@ public class EntityTemplate : ScriptableObject
 
 	public Entity Spawn()
 	{
-		Entity obj = Instantiate(prefab);
-		obj.transform.SetParent(Floor.Instance.transform);
-		return obj;
+		Entity entity = Instantiate(prefab);
+		entity.transform.SetParent(Floor.Instance.transform);
+		entity.template = this;
+		return entity;
 	}
 
 }

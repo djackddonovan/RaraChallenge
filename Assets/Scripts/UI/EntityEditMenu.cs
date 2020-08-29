@@ -33,8 +33,11 @@ public class EntityEditMenu : MonoBehaviour
 			rootEntityMenu.SetActive(true);
 			behaviourEditMenu.SetActive(false);
 
+			EntityList.BuildParams buildParams = new EntityList.BuildParams();
+			buildParams.entityButtonAction = SelectRootEntity;
+
 			EntityList entityList = rootEntityMenu.GetComponentInChildren<EntityList>();
-			entityList.Build(SelectRootEntity, false, null);
+			entityList.Build(buildParams);
 		}
 		else
 		{

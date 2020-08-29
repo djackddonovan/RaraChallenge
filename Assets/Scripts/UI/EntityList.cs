@@ -8,6 +8,15 @@ using UnityEngine.Events;
 public class EntityList : MonoBehaviour
 {
 
+	public class BuildParams
+	{
+		public UnityAction<EntityTemplate> entityButtonAction = null;
+		public bool showCustomEntities = false;
+		public UnityAction newEntityButtonAction = null;
+		public UnityAction<EntityTemplate> deleteAction = null;
+		public bool showDeleteButtonOnDefaultEntities = false;
+	}
+
 	public EntityButton buttonPrefab;
 	public Button newEntityButtonPrefab;
 	public GameObject separatorPrefab;
@@ -16,7 +25,7 @@ public class EntityList : MonoBehaviour
 
 	public bool buttonAreDragAndDrop = false;
 
-	public void Build(UnityAction<EntityTemplate> _entityButtonAction, bool _showCustomEntities, UnityAction _newEntityButtonAction)
+	public void Build(BuildParams _params)
 	{
 		foreach (Transform go in listObject)
 			Destroy(go.gameObject);
@@ -24,11 +33,11 @@ public class EntityList : MonoBehaviour
 		foreach (var entity in EditorGlobals.Instance.defaultEntities)
 		{
 			var button = Instantiate(buttonPrefab);
-			button.Init(entity, _entityButtonAction, buttonAreDragAndDrop);
+			button.Init(entity, _params.entityButtonAction, buttonAreDragAndDrop, _params.showDeleteButtonOnDefaultEntities ? _params.deleteAction : null);
 			button.transform.SetParent(listObject);
 		}
 
-		if (_showCustomEntities)
+		if (_params.showCustomEntities)
 		{
 			var separator = Instantiate(separatorPrefab);
 			separator.transform.SetParent(listObject);
@@ -36,19 +45,19 @@ public class EntityList : MonoBehaviour
 			foreach (var entity in GameData.gameEntities)
 			{
 				var button = Instantiate(buttonPrefab);
-				button.Init(entity, _entityButtonAction, buttonAreDragAndDrop);
+				button.Init(entity, _params.entityButtonAction, buttonAreDragAndDrop, _params.deleteAction);
 				button.transform.SetParent(listObject);
 			}
 		}
 
-		if (_newEntityButtonAction != null)
+		if (_params.newEntityButtonAction != null)
 		{
 			var separator = Instantiate(separatorPrefab);
 			separator.transform.SetParent(listObject);
 
 			var newEntityButton = Instantiate(newEntityButtonPrefab);
 			newEntityButton.transform.SetParent(listObject);
-			newEntityButton.onClick.AddListener(_newEntityButtonAction);
+			newEntityButton.onClick.AddListener(_params.newEntityButtonAction);
 		}
 	}
 
