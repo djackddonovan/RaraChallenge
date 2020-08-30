@@ -10,13 +10,22 @@ public class Entity : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		if (EventSystem.current.IsPointerOverGameObject())
+		if (MouseIsOverUI())
 			return;
 
 		if (GameManager.Instance.PlayModeActive)
 			TriggetBehaviourClicks();
 		else
 			FloorEditor.Instance.EditEntityPosition(this);
+	}
+
+	static bool MouseIsOverUI()
+	{
+		PointerEventData rayData = new PointerEventData(EventSystem.current);
+		rayData.position = Input.mousePosition;
+		List<RaycastResult> res = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(rayData, res);
+		return res.Count > 0;
 	}
 
 	void TriggetBehaviourClicks()

@@ -48,7 +48,7 @@ public class FloorEditor : Singleton<FloorEditor>
 	private void Awake()
 	{
 		EventTrigger.Entry exitDeleteButton = new EventTrigger.Entry();
-		exitDeleteButton.callback.AddListener((data) => ReleaseOnDeleteButton());
+		exitDeleteButton.callback.AddListener((data) => DropOnDeleteButton());
 		exitDeleteButton.eventID = EventTriggerType.PointerExit;
 		deleteEntityButton.triggers.Add(exitDeleteButton);
 	}
@@ -102,7 +102,7 @@ public class FloorEditor : Singleton<FloorEditor>
 		}
 	}
 
-	void ReleaseOnDeleteButton()
+	void DropOnDeleteButton()
 	{
 		if (Input.GetMouseButton(0)) // cursor left the button, wasn't released on it
 			return;
@@ -110,7 +110,10 @@ public class FloorEditor : Singleton<FloorEditor>
 		if (state == FloorEditorState.EditEntityPosition &&
 			selectedEntity)
 		{
-			Destroy(selectedEntity.gameObject);
+			DestroyImmediate(selectedEntity.gameObject);
+			// DestroyImmediate fixes a small bug with the floor entity list. Ideally
+			// I would make an event system to update the entity list correctly when an
+			// entity is destroyed, but I didn't want to make one Just to fix this bug
 			Deselect();
 		}
 	}
