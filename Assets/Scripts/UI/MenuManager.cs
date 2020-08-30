@@ -8,21 +8,29 @@ public class MenuManager : Singleton<MenuManager>
 	public enum MenuType
 	{
 		FloorEditMenu,
-		EntityEditMenu
+		EntityEditMenu,
+		InGameMenu
 	}
 
 	FloorEditMenu floorEditMenu;
 	EntityEditMenu entityEditMenu;
+	InGameMenu inGameMenu;
 
-	public static void OpenFloorEditMenu()
+	public static void OpenFloorEditMenu(FloorEditMenu.SubMenu subMenu = FloorEditMenu.SubMenu.AddEntitiesMenu)
 	{
 		Instance.InnerOpenMenu(MenuType.FloorEditMenu);
+		Instance.floorEditMenu.SetCurrentMenu(subMenu);
 	}
 
 	public static void OpenEntityEditMenu(EntityTemplate _editedEntity)
 	{
 		Instance.InnerOpenMenu(MenuType.EntityEditMenu);
 		Instance.entityEditMenu.StartEdit(_editedEntity);
+	}
+
+	public static void OpenInGameMenu()
+	{
+		Instance.InnerOpenMenu(MenuType.InGameMenu);
 	}
 
 	public static void Hide()
@@ -39,8 +47,9 @@ public class MenuManager : Singleton<MenuManager>
 	{
 		floorEditMenu = GetComponentInChildren<FloorEditMenu>(true);
 		entityEditMenu = GetComponentInChildren<EntityEditMenu>(true);
+		inGameMenu = GetComponentInChildren<InGameMenu>(true);
 
-		OpenFloorEditMenu();
+		OpenFloorEditMenu(FloorEditMenu.SubMenu.AddEntitiesMenu);
 	}
 
 	void InnerOpenMenu(MenuType _menuType)
@@ -49,6 +58,7 @@ public class MenuManager : Singleton<MenuManager>
 
 		floorEditMenu.gameObject.SetActive(_menuType == MenuType.FloorEditMenu);
 		entityEditMenu.gameObject.SetActive(_menuType == MenuType.EntityEditMenu);
+		inGameMenu.gameObject.SetActive(_menuType == MenuType.InGameMenu);
 	}
 
 }

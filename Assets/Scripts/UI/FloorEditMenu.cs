@@ -6,6 +6,14 @@ using UnityEngine.UI;
 
 public class FloorEditMenu : MonoBehaviour
 {
+
+	public enum SubMenu : int
+	{
+		AddEntitiesMenu,
+		FloorEntitiesMenu,
+		Game
+	}
+
 	[Header("Main")]
 	public GameObject content;
 	public Button maximizeButton;
@@ -17,27 +25,42 @@ public class FloorEditMenu : MonoBehaviour
 	public GameObject floorEntitiesMenu;
 	public GameObject gameMenu;
 
+	[Header("Game Menu")]
+	public Button playButton;
+
 	private void Awake()
 	{
 		menuDropdown.onValueChanged.AddListener(SetCurrentMenu);
 		maximizeButton.onClick.AddListener(Maximize);
 		minimizeButton.onClick.AddListener(Minimize);
+		playButton.onClick.AddListener(Play);
 	}
 
 	void OnEnable()
 	{
 		menuDropdown.SetValueWithoutNotify(0);
-		SetCurrentMenu(0);
 
 		// add any created entity to the list
 		RebuildEntityList();
 	}
 
+	void OnDisable()
+	{
+		FloorEditor.Instance.Deselect();
+	}
+
+	public void SetCurrentMenu(SubMenu menu)
+	{
+		addEntitiesMenu.SetActive(menu == SubMenu.AddEntitiesMenu);
+		floorEntitiesMenu.SetActive(menu == SubMenu.FloorEntitiesMenu);
+		gameMenu.SetActive(menu == SubMenu.Game);
+
+		menuDropdown.SetValueWithoutNotify((int)menu);
+	}
+
 	void SetCurrentMenu(int idx)
 	{
-		addEntitiesMenu.SetActive(idx == 0);
-		floorEntitiesMenu.SetActive(idx == 1);
-		gameMenu.SetActive(idx == 2);
+		SetCurrentMenu((SubMenu)idx);
 	}
 
 	public void Maximize()
@@ -61,7 +84,7 @@ public class FloorEditMenu : MonoBehaviour
 		buildParams.editAction = EditEntity;
 		buildParams.deleteAction = DeleteEntityTemplate;
 
-		EntityList entityList = GetComponentInChildren<EntityList>();
+		EntityList entityList = addEntitiesMenu.GetComponentInChildren<EntityList>(true);
 		entityList.Build(buildParams);
 	}
 
@@ -73,8 +96,6 @@ public class FloorEditMenu : MonoBehaviour
 
 	void CreateNewEntity()
 	{
-		FloorEditor.Instance.Deselect();
-
 		EntityTemplate newEntity = ScriptableObject.CreateInstance<EntityTemplate>();
 		GameData.gameEntities.Add(newEntity);
 		MenuManager.OpenEntityEditMenu(newEntity);
@@ -93,6 +114,11 @@ public class FloorEditMenu : MonoBehaviour
 			GameData.DeleteEntityTemplate(_entity);
 
 		RebuildEntityList();
+	}
+
+	void Play()
+	{
+		GameManager.Instance.StartPlayMode();
 	}
 
 }

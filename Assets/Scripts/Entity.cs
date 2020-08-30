@@ -13,7 +13,7 @@ public class Entity : MonoBehaviour
 		if (EventSystem.current.IsPointerOverGameObject())
 			return;
 
-		if (false /*game running*/)
+		if (GameManager.Instance.PlayModeActive)
 			TriggetBehaviourClicks();
 		else
 			FloorEditor.Instance.EditEntityPosition(this);

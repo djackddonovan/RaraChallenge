@@ -39,7 +39,8 @@ public class FloorEditor : Singleton<FloorEditor>
 	public void Deselect()
 	{
 		selectedEntity = null;
-		selectionIndicator.gameObject.SetActive(false);
+		if (selectionIndicator)
+			selectionIndicator.gameObject.SetActive(false);
 	}
 
 	private void Awake()
