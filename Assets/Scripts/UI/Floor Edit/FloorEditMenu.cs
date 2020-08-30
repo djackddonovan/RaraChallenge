@@ -38,8 +38,6 @@ public class FloorEditMenu : MonoBehaviour
 
 	void OnEnable()
 	{
-		menuDropdown.SetValueWithoutNotify(0);
-
 		// add any created entity to the list
 		RebuildEntityList();
 	}

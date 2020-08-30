@@ -20,6 +20,8 @@ public class FloorEditor : Singleton<FloorEditor>
 
 	Entity selectedEntity;
 
+	public Entity CurrentSelection { get { return selectedEntity; } }
+
 	public void EditEntityPosition(Entity _entity)
 	{
 		Instance.EditEntityPositionInternal(_entity);
