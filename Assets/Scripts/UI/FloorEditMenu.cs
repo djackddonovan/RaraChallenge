@@ -46,7 +46,8 @@ public class FloorEditMenu : MonoBehaviour
 
 	void OnDisable()
 	{
-		FloorEditor.Instance.Deselect();
+		if (FloorEditor.Instance)
+			FloorEditor.Instance.Deselect();
 	}
 
 	public void SetCurrentMenu(SubMenu menu)

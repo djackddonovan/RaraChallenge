@@ -21,7 +21,10 @@ public class Entity : MonoBehaviour
 
 	void TriggetBehaviourClicks()
 	{
-
+		foreach (var behaviour in template.behaviours)
+		{
+			behaviour.OnEntityClick(this);
+		}
 	}
 
 }

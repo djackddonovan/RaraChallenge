@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
 
+	public GlobalData globalData;
+
 	Floor editorFloor;
 	GameObject floorCopy;
 

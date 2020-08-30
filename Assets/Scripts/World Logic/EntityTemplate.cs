@@ -19,7 +19,7 @@ public class EntityTemplate : ScriptableObject
 
 #if UNITY_EDITOR
 	[MenuItem("Assets/Create/Entity Template")]
-	public static void CreateMyAsset()
+	public static void CreateEntityTemplateAsset()
 	{
 		EntityTemplate asset = ScriptableObject.CreateInstance<EntityTemplate>();
 

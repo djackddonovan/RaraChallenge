@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityBehaviourDefinition
+public abstract class EntityBehaviourDefinition
 {
+
+	public virtual void OnEntityClick(Entity _entity) { }
 
 }
